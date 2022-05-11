@@ -55,3 +55,10 @@ ref: https://www.npmjs.com/package/mongoose
 
 ## Router express
 ref: https://expressjs.com/es/guide/routing.html
+
+## dotenv
+Create a .env file in the root of your project
+As early as possible in your application, import and configure dotenv:
+
+    require('dotenv').config()
+    console.log(process.env) // remove this after you've confirmed it working
