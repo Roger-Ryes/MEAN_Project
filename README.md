@@ -62,3 +62,22 @@ As early as possible in your application, import and configure dotenv:
 
     require('dotenv').config()
     console.log(process.env) // remove this after you've confirmed it working
+
+## express.static
+This is a built-in middleware function in Express. It serves static files and is based on serve-static.
+The function determines the file to serve by combining req.url with the provided root directory. 
+
+    app.use(express.static('public'))
+    // or
+    var options = {
+        dotfiles: 'ignore',
+        etag: false,
+        extensions: ['htm', 'html'],
+        index: false,
+        maxAge: '1d',
+        redirect: false,
+        setHeaders: function (res, path, stat) {
+            res.set('x-timestamp', Date.now())
+        }
+    }
+    app.use(express.static('public', options))

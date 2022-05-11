@@ -8,6 +8,9 @@ console.log(process.env)
 // Create server/app of express
 const app = express();
 
+// Directory public
+app.use( express.static("public") );
+
 // CORS
 app.use(cors());
 
@@ -16,6 +19,7 @@ app.use(express.json());
 
 // Paths, routing
 app.use('/api/auth', pathsRouter);
+
 
 
 app.listen(process.env.PORT, () => {
