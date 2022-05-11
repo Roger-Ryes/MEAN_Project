@@ -81,3 +81,6 @@ The function determines the file to serve by combining req.url with the provided
         }
     }
     app.use(express.static('public', options))
+
+## Validator
+ref: https://express-validator.github.io/docs/

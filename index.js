@@ -4,7 +4,7 @@ require('dotenv').config();
 
 var pathsRouter = require('./routes/auth');
 
-console.log(process.env)
+// console.log(process.env)
 // Create server/app of express
 const app = express();
 
