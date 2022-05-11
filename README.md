@@ -52,3 +52,6 @@ ref: https://www.npmjs.com/package/jsonwebtoken
 ### mongoose
 Mongoose is a MongoDB object modeling tool designed to work in an asynchronous environment. Mongoose supports both promises and callbacks.
 ref: https://www.npmjs.com/package/mongoose
+
+## Router express
+ref: https://expressjs.com/es/guide/routing.html
