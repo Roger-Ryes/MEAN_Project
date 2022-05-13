@@ -1,9 +1,9 @@
 const { response, request } = require("express");
 const { validationResult } = require("express-validator");
+const User = require("../models/user");
 
 
-
-const newAuth = (req = request, res = response) => {
+const newAuth = async (req = request, res = response) => {
     // const errors = validationResult(req);
     // if(!errors.isEmpty()){
     //     return res.status(404).json({
@@ -13,6 +13,37 @@ const newAuth = (req = request, res = response) => {
     // }
 
     const { name, email, password } = req.body;
+
+    try {
+        // Verificar email
+        let user = await User.findOne({ email });
+
+        if (user) {
+            return res.status(400).json({
+                ok: false,
+                msg: "El email ya existe"
+            });
+        }
+        // Crear usuario con el modelo
+        const dbUser = new User(req.body);
+        // hashear contraseña
+        // Generar el JWT(JavaWebToken)
+        // Crear user en BDD
+        dbUser.save();
+        // Generar respuesta    
+        return res.status(201).json({
+            ok: true,
+            uid: dbUser.id,
+            name,
+        })
+    } catch (error) {
+        return res.status(500).json({
+            ok: false,
+            msg: 'Informar al administrador'
+        });
+    }
+
+
     return res.json({
         ok: true,
         msg: 'Crear nuevo usuario'
