@@ -15,7 +15,7 @@ router.post('/new',
 // Login user
 router.post('/',
     check('email', "El email es obligatorio").isEmail(),
-    check('password', "La contraseña es obligatoria").isLength({ min: 6 }),
+    check('password', "La contraseña es obligatoria").isLength({ min: 5 }),
     loginUser
 );
 // Validate token
