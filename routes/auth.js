@@ -2,6 +2,7 @@ const { Router } = require('express');
 const { body, check } = require('express-validator');
 const { newAuth, loginUser, validateToken } = require('../controllers/auth');
 const { validateCamp } = require('../middlewares/validate-camp');
+const { validateJWT } = require('../middlewares/validate-jwt');
 
 const router = Router();
 
@@ -9,7 +10,7 @@ const router = Router();
 router.post('/new',
     check("name", "El Nombre es obligatorio").not().isEmpty(),
     check("email", "El email es obligatorio").isEmail(),
-    check("password", "La Contraseña es obligatorio").isLength({min: 5}),
+    check("password", "La Contraseña es obligatorio").isLength({ min: 5 }),
     validateCamp,
     newAuth);
 // Login user
@@ -19,7 +20,9 @@ router.post('/',
     loginUser
 );
 // Validate token
-router.get('/renew', validateToken);
+router.get('/renew',
+    validateJWT,
+    validateToken);
 
 
 

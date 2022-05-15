@@ -33,7 +33,7 @@ const newAuth = async (req = request, res = response) => {
         dbUser.password = bcrypt.hashSync(password, salt);
 
         // Generar el JWT(JavaWebToken)
-        const token = await generateJWT(dbUser.uid, name) ;
+        const token = await generateJWT(dbUser._id, name);
 
         // Crear user en BDD
         dbUser.save();
@@ -41,7 +41,7 @@ const newAuth = async (req = request, res = response) => {
         // Generar respuesta    
         return res.status(201).json({
             ok: true,
-            uid: dbUser.id,
+            uid: dbUser._id,
             name,
             token
         })
@@ -74,8 +74,8 @@ const loginUser = async (req, res = response) => {
     // console.log(`email: ${email}, password: ${password}`);
 
     try {
-        const dbUser= await User.findOne({ email: email });
-        if(!dbUser){
+        const dbUser = await User.findOne({ email: email });
+        if (!dbUser) {
             return res.status(400).json({
                 ok: false,
                 msg: "El correo no existe"
@@ -83,7 +83,7 @@ const loginUser = async (req, res = response) => {
         }
         // Confirmar si password hace match
         const validPass = bcrypt.compareSync(password, dbUser.password);
-        if(!validPass){
+        if (!validPass) {
             return res.status(400).json({
                 ok: false,
                 msg: 'La contraseña no es valido'
@@ -91,11 +91,11 @@ const loginUser = async (req, res = response) => {
         }
 
         // Generar el JWT
-        const token = await generateJWT(dbUser.uid, dbUser.name);
-
+        const token = await generateJWT(dbUser._id, dbUser.name);
+        
         return res.status(201).json({
             ok: true,
-            uid: dbUser.uid,
+            uid: dbUser._id,
             name: dbUser.name,
             token
         });
@@ -111,10 +111,13 @@ const loginUser = async (req, res = response) => {
 
 
 // Validar Token
-const validateToken = (req, res = response) => {
+const validateToken = (req = request, res = response) => {
+    const {uid, name} = req;
+
     return res.json({
         ok: true,
-        msg: 'Renew'
+        uid: uid,
+        name: name
     })
 };
 
