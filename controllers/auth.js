@@ -4,6 +4,8 @@ const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const { generateJWT } = require("../helpers/jwt");
 
+
+// Crear User
 const newAuth = async (req = request, res = response) => {
     // const errors = validationResult(req);
     // if(!errors.isEmpty()){
@@ -92,7 +94,7 @@ const loginUser = async (req, res = response) => {
 
         // Generar el JWT
         const token = await generateJWT(dbUser._id, dbUser.name);
-        
+
         return res.status(201).json({
             ok: true,
             uid: dbUser._id,
@@ -112,7 +114,7 @@ const loginUser = async (req, res = response) => {
 
 // Validar Token
 const validateToken = (req = request, res = response) => {
-    const {uid, name} = req;
+    const { uid, name } = req;
 
     return res.json({
         ok: true,
@@ -121,8 +123,40 @@ const validateToken = (req = request, res = response) => {
     })
 };
 
+// Revalidar Token
+const reValidateToken = async (req = request, res = response) => {
+
+    const { uid, name } = req.body;
+
+    try {
+        // Conexion BD
+        const bd = await User.findOne({ _id: uid });
+        if (!bd) {
+            res.status(401).json({
+                ok: false,
+                msg: "No existe usuario"
+            })
+        }
+        // Generate Token
+        const token = await generateJWT(uid, name);
+        return res.json({
+            ok: true,
+            uid: uid,
+            name: name,
+            token
+        })
+    } catch (error) {
+        res.status(501).json({
+            ok: false,
+            msg: "Comunicarse con Administrador"
+        })
+    }
+
+};
+
 module.exports = {
     newAuth,
     loginUser,
-    validateToken
+    validateToken,
+    reValidateToken
 }
