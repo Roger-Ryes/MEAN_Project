@@ -12,8 +12,8 @@ import { AuthService } from '../../services/auth.service';
 export class LoginComponent {
 
   myForm: FormGroup = this.fb.group({
-    email: ["test@test.com", [Validators.required, Validators.email]],
-    password: ["test123", [Validators.required, Validators.minLength(5)]]
+    email: ["test1@test1.com", [Validators.required, Validators.email]],
+    password: ["test1", [Validators.required, Validators.minLength(5)]]
   });
 
   constructor(
@@ -26,9 +26,12 @@ export class LoginComponent {
     const { email, password } = this.myForm.value;
 
     this.authService.login(email, password).subscribe(resp => {
-      console.log(resp);
+      if (resp) {
+        this.router.navigate(["/dashboard"]);
+      }else{
+        // TODO: Show Message
+      }
     });
 
-    // this.router.navigate(["/dashboard"]);
   }
 }
