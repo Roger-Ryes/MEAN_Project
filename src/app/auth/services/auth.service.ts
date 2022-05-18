@@ -40,12 +40,20 @@ export class AuthService {
   validateToken() {
     const path = `${this.endpoind}/auth/renew`;
     const header = new HttpHeaders().set("x-token", localStorage.getItem("token") || "");
-    return this.http.get<AuthResponse>(path, {headers: header}).pipe(
-      map(resp=>{
+    return this.http.get<AuthResponse>(path, { headers: header }).pipe(
+      map(resp => {
         this._user = { uid: resp.uid!, name: resp.name! }
         return resp.ok
       }),
-      catchError(err=> of(false))
+      catchError(err => of(false))
     );
+  }
+
+
+
+  // Logout
+  logout() {
+    // localStorage.removeItem("token");
+    localStorage.clear();
   }
 }
