@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { catchError, of, tap } from 'rxjs';
@@ -27,10 +27,19 @@ export class AuthService {
       tap(resp => {
         if (resp.ok) {
           this._user = { uid: resp.uid!, name: resp.name! }
+          localStorage.setItem("token", resp.token!);
         }
       }), // Se ejecuta antes del map y del catch
       map(resp => resp.ok),
       catchError(err => of(err.error.msg))
     );
+  }
+
+
+  // Validate Token
+  validateToken(token: string) {
+    const path = `${this.endpoind}/auth/renew`;
+    const header = new HttpHeaders().set("x-token", localStorage.getItem("token") || "");
+    return this.http.get(path, {headers: header});
   }
 }
