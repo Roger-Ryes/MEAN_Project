@@ -29,3 +29,9 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 # Sweetalert2
 https://sweetalert2.github.io/
+
+# Crear Guard
+Los Guards en Angular, son de alguna manera: middlewares que se ejecutan antes de cargar una ruta y determinan si se puede cargar dicha ruta o no.
+ref: https://binary-coffee.dev/post/guards-en-angular-como-funcionan
+
+    ng g guard path --skipTests

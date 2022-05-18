@@ -26,8 +26,8 @@ export class AuthService {
     return this.http.post<AuthResponse>(path, body).pipe(
       tap(resp => {
         if (resp.ok) {
-          this._user = { uid: resp.uid!, name: resp.name! }
           localStorage.setItem("token", resp.token!);
+          this._user = { uid: resp.uid!, name: resp.name! }
         }
       }), // Se ejecuta antes del map y del catch
       map(resp => resp.ok),
@@ -37,9 +37,15 @@ export class AuthService {
 
 
   // Validate Token
-  validateToken(token: string) {
+  validateToken() {
     const path = `${this.endpoind}/auth/renew`;
     const header = new HttpHeaders().set("x-token", localStorage.getItem("token") || "");
-    return this.http.get(path, {headers: header});
+    return this.http.get<AuthResponse>(path, {headers: header}).pipe(
+      map(resp=>{
+        this._user = { uid: resp.uid!, name: resp.name! }
+        return resp.ok
+      }),
+      catchError(err=> of(false))
+    );
   }
 }
