@@ -30,7 +30,7 @@ export class AuthService {
         }
       }), // Se ejecuta antes del map y del catch
       map(resp => resp.ok),
-      catchError(errr => of(false))
+      catchError(err => of(err.error.msg))
     );
   }
 }
