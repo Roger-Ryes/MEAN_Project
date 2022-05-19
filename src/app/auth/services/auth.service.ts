@@ -27,7 +27,7 @@ export class AuthService {
       tap(resp => {
         if (resp.ok) {
           localStorage.setItem("token", resp.token!);
-          this._user = { uid: resp.uid!, name: resp.name! }
+          this._user = { uid: resp.uid!, name: resp.name!, email: resp.email! }
         }
       }), // Se ejecuta antes del map y del catch
       map(resp => resp.ok),
@@ -42,7 +42,7 @@ export class AuthService {
     const header = new HttpHeaders().set("x-token", localStorage.getItem("token") || "");
     return this.http.get<AuthResponse>(path, { headers: header }).pipe(
       map(resp => {
-        this._user = { uid: resp.uid!, name: resp.name! }
+        this._user = { uid: resp.uid!, name: resp.name!, email: resp.email! }
         return resp.ok
       }),
       catchError(err => of(false))
@@ -66,7 +66,7 @@ export class AuthService {
       tap(resp => {
         if (resp.ok) {
           localStorage.setItem("token", resp.token!);
-          this._user = { uid: resp.uid!, name: resp.name! }
+          this._user = { uid: resp.uid!, name: resp.name!, email: resp.email! }
         }
       }),
       map(resp => resp.ok),
