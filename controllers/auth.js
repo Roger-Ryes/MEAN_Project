@@ -16,7 +16,7 @@ const newAuth = async (req = request, res = response) => {
     // }
 
     const { name, email, password } = req.body;
-
+    
     try {
         // Verificar email
         let user = await User.findOne({ email });
@@ -35,7 +35,7 @@ const newAuth = async (req = request, res = response) => {
         dbUser.password = bcrypt.hashSync(password, salt);
 
         // Generar el JWT(JavaWebToken)
-        const token = await generateJWT(dbUser._id, name);
+        const token = await generateJWT(dbUser._id, name, email);
 
         // Crear user en BDD
         dbUser.save();
@@ -45,6 +45,7 @@ const newAuth = async (req = request, res = response) => {
             ok: true,
             uid: dbUser._id,
             name,
+            email,
             token
         })
     } catch (error) {
@@ -93,12 +94,13 @@ const loginUser = async (req, res = response) => {
         }
 
         // Generar el JWT
-        const token = await generateJWT(dbUser._id, dbUser.name);
+        const token = await generateJWT(dbUser._id, dbUser.name, dbUser.email);
 
         return res.status(201).json({
             ok: true,
             uid: dbUser._id,
             name: dbUser.name,
+            email: dbUser.email,
             token
         });
 
@@ -114,12 +116,13 @@ const loginUser = async (req, res = response) => {
 
 // Validar Token
 const validateToken = (req = request, res = response) => {
-    const { uid, name } = req;
+    const { uid, name, email } = req;
 
     return res.json({
         ok: true,
         uid: uid,
-        name: name
+        name: name,
+        email
     })
 };
 

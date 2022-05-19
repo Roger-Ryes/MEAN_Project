@@ -1,9 +1,9 @@
 const jwt = require("jsonwebtoken")
 
 
-const generateJWT = (uid, name) => {
+const generateJWT = (uid, name, email) => {
 
-    const payload = { uid, name };
+    const payload = { uid, name, email };
     // Se transforma el callback a Promise
     return new Promise((resolve, reject) => {
         // Es un callback
