@@ -3,6 +3,7 @@ const { validationResult } = require("express-validator");
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const { generateJWT } = require("../helpers/jwt");
+const { findOne } = require("../models/user");
 
 
 // Crear User
@@ -16,7 +17,7 @@ const newAuth = async (req = request, res = response) => {
     // }
 
     const { name, email, password } = req.body;
-    
+
     try {
         // Verificar email
         let user = await User.findOne({ email });
@@ -35,7 +36,7 @@ const newAuth = async (req = request, res = response) => {
         dbUser.password = bcrypt.hashSync(password, salt);
 
         // Generar el JWT(JavaWebToken)
-        const token = await generateJWT(dbUser._id, name, email);
+        const token = await generateJWT(dbUser._id, name);
 
         // Crear user en BDD
         dbUser.save();
@@ -94,7 +95,7 @@ const loginUser = async (req, res = response) => {
         }
 
         // Generar el JWT
-        const token = await generateJWT(dbUser._id, dbUser.name, dbUser.email);
+        const token = await generateJWT(dbUser._id, dbUser.name);
 
         return res.status(201).json({
             ok: true,
@@ -115,15 +116,29 @@ const loginUser = async (req, res = response) => {
 
 
 // Validar Token
-const validateToken = (req = request, res = response) => {
-    const { uid, name, email } = req;
-
-    return res.json({
-        ok: true,
-        uid: uid,
-        name: name,
-        email
-    })
+const validateToken = async (req = request, res = response) => {
+    const { uid, name } = req;
+    try {
+        // Consulta a BD
+        const db = await User.findOne({ _id: uid })
+        if(!db){
+            return res.status(501).json({
+                ok: false,
+                msg: "No existe uid"
+            })
+        }
+        return res.status(201).json({
+            ok: true,
+            uid: uid,
+            name: name,
+            email: db.email
+        })
+    } catch (error) {
+        return res.status(501).json({
+            ok: false,
+            msg: "Consulta con administrador"
+        })
+    }
 };
 
 // Revalidar Token
