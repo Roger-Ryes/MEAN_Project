@@ -35,3 +35,22 @@ Los Guards en Angular, son de alguna manera: middlewares que se ejecutan antes d
 ref: https://binary-coffee.dev/post/guards-en-angular-como-funcionan
 
     ng g guard path --skipTests
+
+
+# DEPLIEGUE EN FRONT
+https://www.heroku.com/
+
+## comando
+ng build --prod
+ng build
+
+
+## Deplegar
+Luego de ejecutar el comando ng build, los archivos generados se colocan en la carpeta "public" del backend 
+
+## compatibilidad de Routas Metodo 1 Frontend
+Para que la app de angular sea compatible con el path de otros navegadores usar hash en el routing
+
+    imports: [RouterModule.forRoot(routes, {
+        useHash: true
+    })],
