@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 import { catchError, of, tap } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
-import { AuthResponse, User } from '../interface/auth.interface';
+import { AuthResponse, User, RegisterUser } from '../interface/auth.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -50,10 +50,27 @@ export class AuthService {
   }
 
 
-
   // Logout
   logout() {
     // localStorage.removeItem("token");
     localStorage.clear();
+  }
+
+
+  // Register
+  register(register: RegisterUser) {
+    const path = `${this.endpoind}/auth/new`;
+    const { name, email, password } = register;
+    const body = { name, email, password }
+    return this.http.post<AuthResponse>(path, body).pipe(
+      tap(resp => {
+        if (resp.ok) {
+          localStorage.setItem("token", resp.token!);
+          this._user = { uid: resp.uid!, name: resp.name! }
+        }
+      }),
+      map(resp => resp.ok),
+      catchError(err => of(err.error.msg))
+    );
   }
 }

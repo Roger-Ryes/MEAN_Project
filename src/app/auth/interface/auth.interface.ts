@@ -10,3 +10,8 @@ export interface User {
     uid: string,
     name: string
 }
+export interface RegisterUser {
+    name: string,
+    email: string,
+    password: string
+}
