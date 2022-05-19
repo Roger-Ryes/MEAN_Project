@@ -94,3 +94,31 @@ https://www.npmjs.com/package/bcryptjs
 
 # JSON WEB TOKEN JWT
 https://jwt.io/
+
+
+# DEPLIEGUE EN BACKEND
+https://www.heroku.com/
+pass: face*#
+
+## Despliege del front
+Una vez el producto del front este listo, se envia todo los archivos generados, a la carpeta "public"
+
+## Compatibilidad de Routas Metodo 2 Backend
+Uso de sendFile y path de express
+https://www.geeksforgeeks.org/express-js-res-sendfile-function/
+
+    // Without middleware
+    app.get('/', function(req, res){
+        var options = {
+            root: path.join(__dirname)
+        };
+        
+        var fileName = 'Hello.txt';
+        res.sendFile(fileName, options, function (err) {
+            if (err) {
+                next(err);
+            } else {
+                console.log('Sent:', fileName);
+            }
+        });
+    });
