@@ -126,3 +126,8 @@ https://www.geeksforgeeks.org/express-js-res-sendfile-function/
 ## Subir en HEROKU 
 Se debe seguir los pasos:
 https://dashboard.heroku.com/apps/auth-mean-ap/deploy/heroku-git
+
+## Log en Heroku
+Para ver el log por consola, se ejecuta el comando
+
+    heroku logs -n 1000 --tail -a=auth-mean-ap
