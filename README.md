@@ -122,3 +122,7 @@ https://www.geeksforgeeks.org/express-js-res-sendfile-function/
             }
         });
     });
+
+## Subir en HEROKU 
+Se debe seguir los pasos:
+https://dashboard.heroku.com/apps/auth-mean-ap/deploy/heroku-git
